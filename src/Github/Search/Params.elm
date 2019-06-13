@@ -12,6 +12,7 @@ module Github.Search.Params exposing
     )
 
 import Http
+import Url exposing (percentEncode)
 
 
 type alias Params s =
@@ -67,10 +68,13 @@ add_header key value p =
 
 queryToString : Params s -> String
 queryToString params =
-    (params.q |> String.join "+" |> (++) "q=")
+    (params.q
+        |> List.map percentEncode
+        |> String.join "+"
+        |> (++) "q="
+    )
         ++ topicsToString params.topics
         ++ qualifiersToString params.qualifiers
-        |> Debug.log "DDDDDDDDDDDDDDDDD"
 
 
 topicsToString : List String -> String
@@ -80,7 +84,7 @@ topicsToString list =
 
     else
         list
-            |> List.map ((++) "topic:")
+            |> List.map (percentEncode >> (++) "topic:")
             |> String.join "+"
             |> (++) "+"
 
@@ -92,6 +96,7 @@ qualifiersToString list =
 
     else
         list
+            |> List.map percentEncode
             |> String.join "+"
             |> (++) "+"
 
