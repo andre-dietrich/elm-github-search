@@ -1,4 +1,4 @@
-module Example exposing (Model, Msg(..), State(..), init, main, showRepo, subscriptions, update, view)
+module Example exposing (main)
 
 import Browser
 import Github.Item exposing (Item)
